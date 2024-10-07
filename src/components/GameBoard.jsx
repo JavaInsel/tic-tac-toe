@@ -8,7 +8,12 @@ const initialGameBoard = [
   [null, null, null],
 ];
 
-export default function GameBoard({ playerTurnHandler, onTurn, turnLogger }) {
+export default function GameBoard({
+  playerTurnHandler,
+  onTurn,
+  turnLogger,
+  participant,
+}) {
   const [gameBoardState, setGameBoardState] = useState(initialGameBoard);
   const [winner, setWinner] = useState('');
   const [counter, setCounter] = useState(0);
@@ -34,7 +39,7 @@ export default function GameBoard({ playerTurnHandler, onTurn, turnLogger }) {
         actualGameboardState[thirdBlock.row][thirdBlock.column] === 'X'
       ) {
         //do something
-        setWinner('X');
+        setWinner(participant[0].toUpperCase());
       }
 
       if (
@@ -43,7 +48,7 @@ export default function GameBoard({ playerTurnHandler, onTurn, turnLogger }) {
         actualGameboardState[thirdBlock.row][thirdBlock.column] === 'O'
       ) {
         //do something
-        setWinner('0');
+        setWinner(participant[1].toUpperCase());
       }
     }
   }
@@ -58,9 +63,27 @@ export default function GameBoard({ playerTurnHandler, onTurn, turnLogger }) {
     setCounter((prev) => prev + 1);
   }
 
+  function rematch() {
+    const initial = [...initialGameBoard];
+
+    const initial2 = [
+      [null, null, null],
+      [null, null, null],
+      [null, null, null],
+    ];
+
+    //setGameBoardState(initial); doesn't work! page isn't re-rendered
+    setGameBoardState(initial2);
+    setWinner('');
+    setCounter(0);
+    console.log(gameBoardState, winner, counter);
+  }
+
   return (
     <>
-      {(winner || counter === 9) && <GameOver winner={winner} />}
+      {(winner || counter === 9) && (
+        <GameOver winner={winner} rematch={rematch} />
+      )}
       <ol id="game-board">
         {gameBoardState.map((row, rowIndex) => (
           <li key={rowIndex}>

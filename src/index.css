@@ -4,10 +4,49 @@
   box-sizing: border-box;
 }
 
+/* Media Query for Mobile Devices */
+@media (max-width: 480px) {
+  html {
+      font-size: 6px;
+      background-color: red;
+  }
+}
+
+/* Media Query for low resolution  Tablets, Ipads */
+@media (min-width: 481px) and (max-width: 767px) {
+  html {
+      font-size: 8px;
+      background-color: yellow;
+  }
+}
+
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 768px) and (max-width: 1024px) {
+  html {
+      font-size: 9px;
+      background-color: blue;
+  }
+}
+
+/* Media Query for Laptops and Desktops */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  html {
+      font-size: 10px;
+      background-color: green;
+  }
+}
+
+/* Media Query for Large screens */
+@media (min-width: 1281px) {
+  html {
+      font-size: 13px;
+      background-color: white;
+  }
+}
+
 html {
   font-family: 'Roboto Slab', sans-serif;
   line-height: 1.5;
-
   color: #ebe7ef;
 
   font-synthesis: none;
@@ -349,3 +388,5 @@ ol {
     transform: scale(1);
   }
 }
+
+

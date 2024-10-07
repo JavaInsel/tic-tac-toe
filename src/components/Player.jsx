@@ -1,11 +1,17 @@
 import { useState } from 'react';
 
-export default function Player({ playerName, symbol, isActive }) {
+export default function Player({
+  playerName,
+  symbol,
+  isActive,
+  setParticipation,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(playerName);
 
   function btnHandler() {
     setIsEditing(!isEditing);
+    setParticipation(symbol, name);
   }
 
   function onChangeHandler(event) {

@@ -7,6 +7,7 @@ import GameOver from './components/GameOver';
 function App() {
   const [activePlayer, setActivePlayer] = useState('X');
   const [turnsLog, setTurnsLog] = useState([]);
+  const [participant, setParticipant] = useState(['Player 1', 'Player 2']);
 
   function activePlayerHandler() {
     setActivePlayer(activePlayer === 'X' ? 'O' : 'X');
@@ -18,19 +19,34 @@ function App() {
     setTurnsLog(newTurnsLog);
   }
 
+  function confirmParticipant(symbol, name) {
+    console.log(`I'm player ${name}, symbol: ${symbol}`);
+    if (symbol === 'X') {
+      const newParticipant = [...participant];
+      newParticipant[0] = name;
+      setParticipant(newParticipant);
+    } else {
+      const newParticipant = [...participant];
+      newParticipant[1] = name;
+      setParticipant(newParticipant);
+    }
+  }
+
   return (
     <main>
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
-            playerName="Player 1"
+            playerName={participant[0]}
             symbol="X"
             isActive={activePlayer === 'X'}
+            setParticipation={confirmParticipant}
           />
           <Player
-            playerName="Player 2"
+            playerName={participant[1]}
             symbol="O"
             isActive={activePlayer === 'O'}
+            setParticipation={confirmParticipant}
           />
         </ol>
 
@@ -38,6 +54,7 @@ function App() {
           playerTurnHandler={activePlayerHandler}
           onTurn={activePlayer}
           turnLogger={logTurns}
+          participant={participant}
         />
       </div>
       <Log stepsLog={turnsLog} />
