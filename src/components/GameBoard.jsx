@@ -18,7 +18,9 @@ export default function GameBoard({
     ? useState(JSON.parse(localStorage.getItem('state')))
     : useState(initialGameBoard); //useState(initialGameBoard);
   const [winner, setWinner] = useState('');
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = localStorage.getItem('counter')
+    ? useState(JSON.parse(localStorage.getItem('counter')))
+    : useState(0); //useState(0);
 
   function checkWinner(actualGameboardState) {
     const numberOfCombinations = WINNING_COMBINATIONS.length;
@@ -65,6 +67,7 @@ export default function GameBoard({
     setCounter((prev) => prev + 1);
     localStorage.setItem('state', JSON.stringify(gameBoardState)); //test localstorage
     localStorage.setItem('onturn', onTurn === 'X' ? 'O' : 'X'); //test localstorage
+    localStorage.setItem('counter', counter + 1);
   }
 
   function rematch() {
