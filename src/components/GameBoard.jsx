@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import { WINNING_COMBINATIONS } from '../winning-combinations';
 import GameOver from './GameOver';
 
@@ -14,7 +14,9 @@ export default function GameBoard({
   turnLogger,
   participant,
 }) {
-  const [gameBoardState, setGameBoardState] = useState(initialGameBoard);
+  const [gameBoardState, setGameBoardState] = localStorage.getItem('state')
+    ? useState(JSON.parse(localStorage.getItem('state')))
+    : useState(initialGameBoard); //useState(initialGameBoard);
   const [winner, setWinner] = useState('');
   const [counter, setCounter] = useState(0);
 
@@ -61,6 +63,8 @@ export default function GameBoard({
     turnLogger(row, col, onTurn);
     checkWinner(gameBoardState);
     setCounter((prev) => prev + 1);
+    localStorage.setItem('state', JSON.stringify(gameBoardState)); //test localstorage
+    localStorage.setItem('onturn', onTurn === 'X' ? 'O' : 'X'); //test localstorage
   }
 
   function rematch() {
@@ -76,6 +80,7 @@ export default function GameBoard({
     setGameBoardState(initial2);
     setWinner('');
     setCounter(0);
+    localStorage.clear();
     console.log(gameBoardState, winner, counter);
   }
 

@@ -2,10 +2,11 @@ import { useState } from 'react';
 import Player from './components/Player';
 import GameBoard from './components/GameBoard';
 import Log from './components/Log';
-import GameOver from './components/GameOver';
 
 function App() {
-  const [activePlayer, setActivePlayer] = useState('X');
+  const [activePlayer, setActivePlayer] = localStorage.getItem('onturn')
+    ? useState(localStorage.getItem('onturn'))
+    : useState('X'); //useState('X');
   const [turnsLog, setTurnsLog] = useState([]);
   const [participant, setParticipant] = useState(['Player 1', 'Player 2']);
 
