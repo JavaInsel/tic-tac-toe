@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { WINNING_COMBINATIONS } from '../winning-combinations';
 import GameOver from './GameOver';
 
@@ -13,6 +13,7 @@ export default function GameBoard({
   onTurn,
   turnLogger,
   participant,
+  rematchRender,
 }) {
   const [gameBoardState, setGameBoardState] = localStorage.getItem('state')
     ? useState(JSON.parse(localStorage.getItem('state')))
@@ -20,7 +21,7 @@ export default function GameBoard({
   const [winner, setWinner] = useState('');
   const [counter, setCounter] = localStorage.getItem('counter')
     ? useState(JSON.parse(localStorage.getItem('counter')))
-    : useState(0); //useState(0);
+    : useState(0);
 
   function checkWinner(actualGameboardState) {
     const numberOfCombinations = WINNING_COMBINATIONS.length;
@@ -68,23 +69,21 @@ export default function GameBoard({
     localStorage.setItem('state', JSON.stringify(gameBoardState)); //test localstorage
     localStorage.setItem('onturn', onTurn === 'X' ? 'O' : 'X'); //test localstorage
     localStorage.setItem('counter', counter + 1);
+    localStorage.setItem('players', JSON.stringify(participant));
   }
 
   function rematch() {
-    const initial = [...initialGameBoard];
-
-    const initial2 = [
+    const initial = [
       [null, null, null],
       [null, null, null],
       [null, null, null],
     ];
 
-    //setGameBoardState(initial); doesn't work! page isn't re-rendered
-    setGameBoardState(initial2);
+    setGameBoardState(initial);
     setWinner('');
     setCounter(0);
     localStorage.clear();
-    console.log(gameBoardState, winner, counter);
+    rematchRender();
   }
 
   return (

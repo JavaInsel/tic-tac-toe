@@ -6,8 +6,10 @@ import Log from './components/Log';
 function App() {
   const [activePlayer, setActivePlayer] = localStorage.getItem('onturn')
     ? useState(localStorage.getItem('onturn'))
-    : useState('X'); //useState('X');
-  const [turnsLog, setTurnsLog] = useState([]);
+    : useState('X');
+  const [turnsLog, setTurnsLog] = localStorage.getItem('turnsLog')
+    ? useState(JSON.parse(localStorage.getItem('turnsLog')))
+    : useState([]);
   const [participant, setParticipant] = localStorage.getItem('players')
     ? useState(JSON.parse(localStorage.getItem('players')))
     : useState(['Player 1', 'Player 2']);
@@ -18,7 +20,13 @@ function App() {
 
   function logTurns(row, col, player) {
     const newTurnsLog = [...turnsLog];
-    newTurnsLog.unshift({ coor: `${row},${col}`, pl: player });
+    const playerName = player === 'X' ? participant[0] : participant[1];
+    newTurnsLog.unshift({
+      coor: `${row},${col}`,
+      pl: playerName.toUpperCase(),
+    });
+    localStorage.setItem('turnsLog', JSON.stringify(newTurnsLog));
+    setParticipant(participant); //also set Participant directly after clicking the game
     setTurnsLog(newTurnsLog);
   }
 
@@ -35,6 +43,11 @@ function App() {
       setParticipant(newParticipant);
       localStorage.setItem('players', JSON.stringify(newParticipant));
     }
+  }
+
+  function renderAfterRematch() {
+    setActivePlayer('X');
+    setTurnsLog([]);
   }
 
   return (
@@ -60,6 +73,7 @@ function App() {
           onTurn={activePlayer}
           turnLogger={logTurns}
           participant={participant}
+          rematchRender={renderAfterRematch}
         />
       </div>
       <Log stepsLog={turnsLog} />
